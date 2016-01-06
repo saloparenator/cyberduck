@@ -2,7 +2,7 @@ import sqlite3
 
 import base
 
-_init_sql = open('fsm.sql').read()
+_init_sql = open('sqlite3/fsm.sql').read()
 
 #example
 #from https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Turnstile_state_machine_colored.svg/330px-Turnstile_state_machine_colored.svg.png
@@ -76,10 +76,6 @@ def InitDatabase(conn):
     >>> result = cur.fetchall()
     >>> print(result)
     [(1, u'turnstileA', 1, 1, 1)]
-
-    >>> query = "SELECT * FROM fsm_view_instance"
-    >>> cur = cur.execute(query)
-    >>> result = cur.fetchall()
     '''
     if not conn:
         conn = sqlite3.connect(':memory:')
@@ -110,21 +106,11 @@ def NewInstance(conn,MachineName,InstanceName=None):
 def BuildMachine(conn,FSM):
     """
     >>> conn = sqlite3.connect(':memory:')
+    >>> conn = base.InitDatabase(conn)
     >>> conn = InitDatabase(conn)
     >>> conn = BuildMachine(conn,_test_json)
     >>> conn.commit()
     >>> cur = conn.cursor()
-    TODO
-    >>> query = "SELECT * FROM fsm_turn_view_instance"
-    >>> cur = cur.execute(query)
-    >>> result = cur.fetchall()
-    >>> print(result)
-    [(1, u'turnstileA', 1, 1, 1)]
-
-    >>> query = "SELECT * FROM fsm_view_instance"
-    >>> cur = cur.execute(query)
-    >>> result = cur.fetchall()
-
     """
     cur = conn.cursor()
     for state in FSM['state']:
